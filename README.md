@@ -1,0 +1,1 @@
+# fylr-plugin-linked-object-use-once
