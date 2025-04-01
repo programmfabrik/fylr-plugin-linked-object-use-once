@@ -1,0 +1,25 @@
+{
+    "system": {},
+    "plugin": {
+        "fylr-plugin-linked-object-use-once": {
+            "config": {
+                "tan_settings": {
+                    "linked_settings": [
+                        {
+                            "tan_objecttype": "disbkd_freieobjekte",
+                            "main_objecttype": "disbkd_objekt",
+                            "tagfilter": {
+                                "any": [
+                                    {{ datastore `tag_id_free` }}
+                                ],
+                                "not": [
+                                    {{ datastore `tag_id_assigned` }}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

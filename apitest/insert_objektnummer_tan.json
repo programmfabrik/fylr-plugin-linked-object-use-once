@@ -1,0 +1,37 @@
+[
+    {
+        "name": "POST /api/v1/db/disbkd_freieobjekte",
+        "request": {
+            "body": [
+                {{ range $idx, $row := file_csv "objektnummer_tan.csv" ',' }}
+                {
+                    "_mask": "disbkd_freieobjekte__all_fields",
+                    "_objecttype": "disbkd_freieobjekte",
+                    "_tags": [
+                        {
+                            "lookup:_id": {
+                                "reference":
+                                    {{ if $row.vergeben }}
+                                        "assigned"
+                                    {{ else }}
+                                        "free"
+                                    {{ end }}
+                            }
+                        }
+                    ],
+                    "disbkd_freieobjekte": {
+                        "_version": 1,
+                        "ja_nein": {{ $row.vergeben }},
+                        "objektnummer": {{ $row.objektnummer | marshal }}
+                    }
+                },
+                {{ end }}
+            ],
+            "endpoint": "db/disbkd_freieobjekte",
+            "method": "POST"
+        },
+        "store_response_gjson": {
+            "global_object_ids": "body.#._global_object_id"
+        }
+    }
+]

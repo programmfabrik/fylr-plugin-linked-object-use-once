@@ -1,0 +1,58 @@
+//////////////////////////////////////////////////////////
+//                                                      //
+//  This apitest only works if plugin zip exists at     //
+//  ../../build/fylr-plugin-linked-object-use-once.zip  //
+//                                                      //
+//  Run `make zip` before running apitest               //
+//                                                      //
+//////////////////////////////////////////////////////////
+
+{
+    "name": "fylr-plugin-linked-object-use-once",
+    "header_from_store": {
+        "Authorization": "root-token"
+    },
+    "store": {
+        "setup_datamodel": {{ file "setup/fylr--datamodel-HEAD.json" | marshal }},
+    },
+    "tests": [
+        // tests with root account
+        {
+            "store": {
+                "user": "root",
+                "expect_error": false,
+            }
+        }
+
+        // single editor instance saves objects
+        , "@prepare.json"
+        , "@testcases.json"
+
+
+        // // tests with test user account with minimal objecttype permissions
+        // , {
+        //     "store": {
+        //         "user": "testuser1",
+        //         "expect_error": false,
+        //     }
+        // }
+
+        // // single editor instance saves objects
+        // , "@prepare.json"
+        // , "@testcases.json"
+
+
+        // // tests with test user account with missing objecttype permissions
+        // // test corner cases and internal errors
+        // , {
+        //     "store": {
+        //         "user": "testuser2",
+        //         "expect_error": true,
+        //     }
+        // }
+
+        // // single editor instance saves objects
+        // , "@prepare.json"
+        // , "@testcases.json"
+    ]
+}

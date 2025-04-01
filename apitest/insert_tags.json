@@ -1,0 +1,106 @@
+{
+    "name": "POST /api/v1/tags",
+    "request": {
+        "body": [
+            {
+                "taggroup": {
+                    "displayname": {
+                        "de-DE": "TAN: Sichtbarkeit",
+                        "en-US": "TAN: Visibility"
+                    },
+                    "reference": "tan_visibility",
+                    "shortname": null,
+                    "type": "choice"
+                },
+                "_tags": [
+                    {
+                        "tag": {
+                            "description": {
+                                "de-DE": "",
+                                "en-US": ""
+                            },
+                            "displayname": {
+                                "de-DE": "frei",
+                                "en-US": "free"
+                            },
+                            "displaytype": "facet",
+                            "enabled": true,
+                            "frontend_prefs": {
+                                "webfrontend": {
+                                    "color": "green",
+                                    "icon": "check"
+                                }
+                            },
+                            "is_default": false,
+                            "reference": "free",
+                            "shortname": null,
+                            "sticky": false,
+                            "type": "individual"
+                        }
+                    },
+                    {
+                        "tag": {
+                            "description": {
+                                "de-DE": "",
+                                "en-US": ""
+                            },
+                            "displayname": {
+                                "de-DE": "vergeben",
+                                "en-US": "assigned"
+                            },
+                            "displaytype": "facet",
+                            "enabled": true,
+                            "frontend_prefs": {
+                                "webfrontend": {
+                                    "color": "orange",
+                                    "icon": "warning"
+                                }
+                            },
+                            "is_default": false,
+                            "reference": "assigned",
+                            "shortname": null,
+                            "sticky": false,
+                            "type": "individual"
+                        }
+                    }
+                ]
+            }
+        ],
+        "endpoint": "tags",
+        "method": "POST"
+    },
+    "response": {
+        "statuscode": 200,
+        "body:control": {
+            "order_matters": true,
+            "no_extra": true
+        },
+        "body": [
+            {
+                "taggroup": {
+                    "reference": "tan_visibility"
+                },
+                "_tags:control": {
+                    "order_matters": true,
+                    "no_extra": true
+                },
+                "_tags": [
+                    {
+                        "tag": {
+                            "reference": "free"
+                        }
+                    },
+                    {
+                        "tag": {
+                            "reference": "assigned"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "store_response_gjson": {
+        "tag_id_free": "body.0._tags.0.tag._id",
+        "tag_id_assigned": "body.0._tags.1.tag._id"
+    }
+}

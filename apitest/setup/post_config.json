@@ -1,0 +1,16 @@
+[
+    {
+        "name": "post config",
+        "request": {
+            "header_from_store": {
+                "Authorization": "root-token"
+            },
+            "endpoint": "config",
+            "method": "POST",
+            "body": {{ file_render `base-config-fylr.json` }}
+        },
+        "response": {
+            "statuscode": 200
+        }
+    }
+]

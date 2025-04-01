@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Wait for OBJECT_INDEX: {{ len (datastore "global_object_ids") }} global_object_ids.",
+        "request": {
+            "endpoint": "event/poll/{{ datastore "maxEventID" }}",
+            "method": "GET",
+            "query_params": {
+                "limit": 1000
+            }
+        },
+        "collect_response": [
+            {{ range $index, $v := datastore "global_object_ids" }}
+                {{ if gt $index 0 }},{{end}}
+                {
+                    "body": [
+                        {
+                            "event": {
+                                "type": "OBJECT_INDEX",
+                                "global_object_id": "{{ $v }}"
+                            }
+                        }
+                    ]
+                }
+            {{end}}
+        ],
+        "timeout_ms": 100000,
+        "delay_ms": 500
+
+    },
+    {
+        "name": "Wait for index",
+        "request": {
+            "endpoint": "system/status",
+            "method": "GET",
+            "header_from_store": {
+                "Authorization": "root-token"
+            }
+        },
+        "collect_response": [
+            {
+                "body": {
+                    "total_not_indexed": 0
+                }
+            }
+        ],
+        "timeout_ms": 90000,
+        "delay_ms": 500,
+        "wait_after_ms": 2000
+    },
+    {
+        "name": "Set maxEventID.",
+        "request": {
+            "endpoint": "event/poll/{{ datastore "maxEventID" }}",
+            "method": "GET",
+            "query_params": {
+                "limit": 1000
+            }
+        },
+        "store_response_gjson": {
+            "maxEventID": "body|@reverse|0.event._id"
+        },
+        "wait_after_ms": 4000
+    },
+    {
+        "name": "Set global_object_ids in objectstore to null",
+        "store": {
+            "global_object_ids": null
+        }
+    }
+]

@@ -1,0 +1,13 @@
+*.pyc
+**/__pycache__/
+*.txt
+
+*~
+*.~*
+
+build
+build-info.json
+*.coffee.js
+
+_data
+_setup

@@ -1,0 +1,722 @@
+{
+    "schema": {
+        "version": 1,
+        "based_on_base_version": 1,
+        "max_table_id": 243,
+        "max_column_id": 1155,
+        "tables": [
+            {
+                "name": "disbkd_objekt",
+                "table_id": 16,
+                "pool_link": true,
+                "acl_table": false,
+                "has_tags": true,
+                "is_hierarchical": true,
+                "polyhierarchical": false,
+                "in_main_search": true,
+                "comment": "Das Kernobjekt des DISBKD  - hier laufen alle Denkmalobjekt relevanten Informationen zusammen",
+                "columns": [
+                    {
+                        "kind": "column",
+                        "name": "objid",
+                        "type": "string",
+                        "not_null": false,
+                        "column_id": 105,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "Erfassungsnummer"
+                        }
+                    },
+                    {
+                        "kind": "column",
+                        "name": "objektnummer_tan",
+                        "type": "link",
+                        "not_null": false,
+                        "column_id": 973,
+                        "reverse_edit": false,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "Objektnummer"
+                        }
+                    },
+                    {
+                        "kind": "column",
+                        "name": "objektnummer_zusatz",
+                        "type": "string",
+                        "not_null": false,
+                        "column_id": 975,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "Zusatz"
+                        }
+                    },
+                    {
+                        "kind": "column",
+                        "name": "foto",
+                        "type": "eas",
+                        "not_null": false,
+                        "column_id": 717,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "Beispielfoto "
+                        }
+                    }
+                ],
+                "foreign_keys": [
+                    {
+                        "name": "fk_disbkd_objekt_objektnummer_tan",
+                        "on_delete": "restrict",
+                        "on_update": "cascade",
+                        "columns": [
+                            {
+                                "column_id": 973,
+                                "column_name_hint": "objektnummer_tan"
+                            }
+                        ],
+                        "referenced_table": {
+                            "table_id": 212,
+                            "name_hint": "disbkd_freieobjekte",
+                            "columns": [
+                                {
+                                    "auto_column_primary_key": true
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "unique_keys": [
+                    {
+                        "columns": [
+                            {
+                                "column_id": 973,
+                                "column_name_hint": "objektnummer_tan"
+                            }
+                        ]
+                    }
+                ],
+                "bidirectional": []
+            },
+            {
+                "name": "disbkd_freieobjekte",
+                "table_id": 212,
+                "pool_link": false,
+                "acl_table": true,
+                "has_tags": true,
+                "is_hierarchical": false,
+                "polyhierarchical": false,
+                "in_main_search": false,
+                "comment": "",
+                "columns": [
+                    {
+                        "kind": "column",
+                        "name": "objektnummer",
+                        "type": "string",
+                        "not_null": false,
+                        "column_id": 971,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "Objektnummer"
+                        }
+                    },
+                    {
+                        "kind": "column",
+                        "name": "ja_nein",
+                        "type": "boolean",
+                        "column_id": 972,
+                        "custom_settings": {},
+                        "name_localized": {
+                            "de-DE": "bereits vergeben?"
+                        }
+                    }
+                ],
+                "foreign_keys": [],
+                "unique_keys": [
+                    {
+                        "columns": [
+                            {
+                                "column_id": 971,
+                                "column_name_hint": "objektnummer"
+                            }
+                        ]
+                    }
+                ],
+                "bidirectional": []
+            }
+        ],
+        "type": "user"
+    },
+    "mask": {
+        "type": "user",
+        "version": 1,
+        "based_on_schema_version": 1,
+        "max_mask_id": 146,
+        "masks": [
+            {
+                "name": "disbkd_objekt_all_fields",
+                "mask_id": 111,
+                "table_id": 16,
+                "table_name_hint": "disbkd_objekt",
+                "is_preferred": false,
+                "hide_in_detail": false,
+                "hide_in_editor": false,
+                "hide_in_print_dialog": false,
+                "standard_numbering": "",
+                "require_comment": "never",
+                "comment": "",
+                "system_fields": {
+                    "parent": {
+                        "inline": "standard",
+                        "mask_id": "SAME",
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "object_id": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "tags": {
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "owner": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "pool": {
+                        "output": {
+                            "mode": "show"
+                        }
+                    },
+                    "collections": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "publish": {
+                        "output": {
+                            "mode": "off"
+                        }
+                    }
+                },
+                "fields": [
+                    {
+                        "kind": "field",
+                        "column_id": 105,
+                        "column_name_hint": "objid",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": false,
+                            "table": false,
+                            "standard": {
+                                "format": "comma",
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": true,
+                            "facet": true,
+                            "nested": false
+                        },
+                        "custom_settings": {},
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "field",
+                        "column_id": 717,
+                        "column_name_hint": "foto",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": false,
+                            "table": false,
+                            "standard": {
+                                "format": "comma",
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": true,
+                            "facet": true,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "show_in_map": true
+                        },
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "link",
+                        "column_id": 973,
+                        "column_name_hint": "objektnummer_tan",
+                        "other_table_id": 212,
+                        "other_table_name_hint": "disbkd_freieobjekte",
+                        "inline": "standard",
+                        "mask_id": "PREFERRED",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": false,
+                            "table": false,
+                            "standard": {
+                                "format": "comma",
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": false,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {},
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "field",
+                        "column_id": 975,
+                        "column_name_hint": "objektnummer_zusatz",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": false,
+                            "table": false,
+                            "standard": {
+                                "format": "comma",
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": false,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {},
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    }
+                ],
+                "table_name_localized": {
+                    "de-DE": "Denkmalfachlich geprüftes Objekt"
+                }
+            },
+            {
+                "name": "objektmaske_disbkd__erweitert_betatester_und_admin",
+                "mask_id": 116,
+                "table_id": 16,
+                "table_name_hint": "disbkd_objekt",
+                "is_preferred": true,
+                "hide_in_detail": false,
+                "hide_in_editor": false,
+                "hide_in_print_dialog": false,
+                "standard_numbering": "",
+                "require_comment": "never",
+                "comment": "-",
+                "system_fields": {
+                    "parent": {
+                        "inline": "standard",
+                        "mask_id": "SAME",
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "object_id": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "tags": {
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "owner": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "pool": {
+                        "output": {
+                            "mode": "off"
+                        }
+                    },
+                    "collections": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "publish": {
+                        "output": {
+                            "mode": "off"
+                        }
+                    }
+                },
+                "fields": [
+                    {
+                        "kind": "field",
+                        "column_id": 105,
+                        "column_name_hint": "objid",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": true,
+                            "standard": {
+                                "format": "comma",
+                                "order": 1,
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": true,
+                            "facet": true,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "inline_table": "standard",
+                            "inline_text": "standard"
+                        },
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "link",
+                        "column_id": 973,
+                        "column_name_hint": "objektnummer_tan",
+                        "other_table_id": 212,
+                        "other_table_name_hint": "disbkd_freieobjekte",
+                        "inline": "standard",
+                        "mask_id": 131,
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": true,
+                            "standard": {
+                                "format": "space",
+                                "order": 1,
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": true,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "blockWidth": "25%",
+                            "hide_field_in_search_facet": false,
+                            "show_objecttype_inline": false,
+                            "show_pool_inline": false,
+                            "show_tags_inline": false,
+                            "use_select": false
+                        },
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "field",
+                        "column_id": 975,
+                        "column_name_hint": "objektnummer_zusatz",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": true,
+                            "standard": {
+                                "format": "comma",
+                                "order": 1,
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": false,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "blockWidth": "25%"
+                        },
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    },
+                    {
+                        "kind": "field",
+                        "column_id": 717,
+                        "column_name_hint": "foto",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": false,
+                            "standard": {
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {
+                                "order": 1
+                            },
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": false,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "show_in_map": true
+                        },
+                        "inheritance": {
+                            "inherit": false,
+                            "show_in_detail": false
+                        }
+                    }
+                ],
+                "name_localized": {
+                    "de-DE": "Administration: Erweiterte Maske zur Objekterfassung und -bearbeitung LDA"
+                },
+                "table_name_localized": {
+                    "de-DE": "Denkmalfachlich geprüftes Objekt"
+                },
+                "custom_settings": {
+                    "system_fields": {
+                        "other_fields_edit": "show",
+                        "other_fields_output": "show"
+                    }
+                }
+            },
+            {
+                "name": "disbkd_freieobjekte__all_fields",
+                "mask_id": 131,
+                "table_id": 212,
+                "table_name_hint": "disbkd_freieobjekte",
+                "is_preferred": true,
+                "hide_in_detail": false,
+                "hide_in_editor": false,
+                "hide_in_print_dialog": false,
+                "standard_numbering": "",
+                "require_comment": "never",
+                "comment": "",
+                "system_fields": {
+                    "object_id": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "tags": {
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "acl": {
+                        "output": {
+                            "mode": "show"
+                        },
+                        "edit": {
+                            "mode": "edit"
+                        }
+                    },
+                    "owner": {
+                        "output": {
+                            "mode": "off"
+                        },
+                        "edit": {
+                            "mode": "off"
+                        }
+                    },
+                    "publish": {
+                        "output": {
+                            "mode": "off"
+                        }
+                    }
+                },
+                "fields": [
+                    {
+                        "kind": "field",
+                        "column_id": 971,
+                        "column_name_hint": "objektnummer",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": true,
+                            "standard": {
+                                "format": "comma",
+                                "order": 1,
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": true,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {},
+                        "inheritance": null
+                    },
+                    {
+                        "kind": "field",
+                        "column_id": 972,
+                        "column_name_hint": "ja_nein",
+                        "edit": {
+                            "mode": "edit"
+                        },
+                        "output": {
+                            "detail": true,
+                            "text": true,
+                            "table": true,
+                            "standard": {
+                                "format": "comma",
+                                "stop_if_set": false
+                            },
+                            "standard_eas": {},
+                            "standard_geo": {}
+                        },
+                        "search": {
+                            "expert": true,
+                            "fulltext": false,
+                            "facet": false,
+                            "nested": false
+                        },
+                        "custom_settings": {
+                            "boolean_show_false": true
+                        },
+                        "inheritance": null
+                    }
+                ],
+                "table_name_localized": {
+                    "de-DE": "DISBKD - Freie Objekte"
+                }
+            }
+        ]
+    },
+    "keys": {
+        "mask.16.objektmaske_disbkd__erweitert_betatester_und_admin.name": {
+            "de-DE": "Administration: Erweiterte Maske zur Objekterfassung und -bearbeitung LDA"
+        },
+        "schema.disbkd_freieobjekte.column.ja_nein": {
+            "de-DE": "bereits vergeben?"
+        },
+        "schema.disbkd_freieobjekte.column.objektnummer": {
+            "de-DE": "Objektnummer"
+        },
+        "schema.disbkd_freieobjekte.name": {
+            "de-DE": "DISBKD - Freie Objekte"
+        },
+        "schema.disbkd_objekt.column.foto": {
+            "de-DE": "Beispielfoto "
+        },
+        "schema.disbkd_objekt.column.objektnummer_tan": {
+            "de-DE": "Objektnummer"
+        },
+        "schema.disbkd_objekt.column.objektnummer_zusatz": {
+            "de-DE": "Zusatz"
+        },
+        "schema.disbkd_objekt.column.objid": {
+            "de-DE": "Erfassungsnummer"
+        },
+        "schema.disbkd_objekt.name": {
+            "de-DE": "Denkmalfachlich geprüftes Objekt"
+        }
+    },
+    "version": 1,
+    "format_version": 1
+}

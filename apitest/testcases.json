@@ -1,0 +1,38 @@
+[
+    {
+        "name": "POST /api/v1/db/disbkd_objekt | TAN already assigned -> expect error",
+        "request": {
+            "body": [
+                {
+                    "_mask": "objektmaske_disbkd__erweitert_betatester_und_admin",
+                    "_objecttype": "disbkd_objekt",
+                    "disbkd_objekt": {
+                        "_pool": {
+                            "pool": {
+                                "lookup:_id": {
+                                    "reference": "system:standard"
+                                }
+                            }
+                        },
+                        "_version": 1,
+                        "objektnummer_tan": {
+                            "_mask": "disbkd_freieobjekte__all_fields",
+                            "_objecttype": "disbkd_freieobjekte",
+                            "disbkd_freieobjekte": {
+                                "lookup:_id": {
+                                    "objektnummer": "0001"
+                                }
+                            }
+                        },
+                        "objid": "A1"
+                    }
+                }
+            ],
+            "endpoint": "db/disbkd_objekt",
+            "method": "POST"
+        },
+        "response": {
+            "statuscode": 400
+        }
+    }
+]

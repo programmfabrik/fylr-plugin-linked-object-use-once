@@ -1,0 +1,16 @@
+{
+    "name": "POST /api/v1/objecttype",
+    "request": {
+        "body": [
+            // TODO XXX
+            // update necessary objecttypes with minimal permissions for testuser1
+            // testuser2 has no rights on objects to test internal error handling in the plugin
+
+        ],
+        "endpoint": "objecttype",
+        "method": "POST"
+    },
+    "response": {
+        "statuscode": 200
+    }
+}

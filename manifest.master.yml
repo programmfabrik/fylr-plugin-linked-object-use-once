@@ -1,0 +1,59 @@
+plugin:
+  name: fylr-plugin-linked-object-use-once
+  version: 1.0
+  url: https://github.com/programmfabrik/fylr-plugin-linked-object-use-once
+  displayname:
+    de-DE: "Wertevorrat (ähnlich TAN-Liste)"
+    en-US: "Value storage (similar to TAN list)"
+  server:
+    api-version:
+      require: 1
+  webfrontend:
+    url: fylr-plugin-linked-object-use-once.js
+  l10n: l10n/l10n.csv
+
+base_url_prefix: "webfrontend"
+
+
+base_config:
+
+  - name: tan_settings
+    parameters:
+      linked_settings:
+        type: table
+        fields:
+          - name: tan_objecttype
+            type: text
+            plugin_type: tan_objecttype
+            position: 0
+          - name: main_objecttype
+            type: text
+            plugin_type: main_objecttype
+            position: 1
+          - name: tagfilter
+            type: tagfilter-select
+            position: 2
+
+
+# callback registration
+callbacks:
+  db_pre_save:
+    steps:
+      - name: "todo"
+        callback: todo
+
+    callbacks:
+      todo:
+        exec:
+          service: python3
+          commands:
+            - prog: python3
+              stdin:
+                type: body
+              stderr:
+                type: body
+              stdout:
+                type: body
+              args:
+                - type: value
+                  value: "%_exec.pluginDir%/server/main.py"
