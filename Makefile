@@ -5,11 +5,15 @@ ZIP_NAME ?= "${PLUGIN_NAME}.zip"
 
 COFFEE_FILES = src/webfrontend/fylr-plugin-linked-object-use-once.coffee
 
+L10N_FILES = l10n/l10n.csv
+L10N_GOOGLE_KEY = 1Z3UPJ6XqLBp-P8SUf-ewq4osNJ3iZWKJB83tc6Wrfn0
+L10N_GOOGLE_GID = 1350551470
+
 include easydb-library/tools/base-plugins.make
 
 all: build ## build
 
-build: clean code buildinfojson ## build all (creates build folder)
+build: clean code $(L10N) buildinfojson ## build all (creates build folder)
 	mkdir -p $(BUILD_DIR)/$(PLUGIN_NAME)
 	cp manifest.master.yml $(BUILD_DIR)/$(PLUGIN_NAME)/manifest.yml
 	cp -r src/server $(BUILD_DIR)/$(PLUGIN_NAME)

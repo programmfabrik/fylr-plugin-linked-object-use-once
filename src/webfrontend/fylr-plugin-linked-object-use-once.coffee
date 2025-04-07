@@ -7,7 +7,7 @@ class FylrPluginLinkedObjectUseOnce extends BaseConfigPlugin
 
 			when "tan_objecttype"
 				field = new ez5.ObjecttypeSelector
-					form: label: $$("server.config.parameter.system.fylr_plugin_linked_object_use_once.tan_objecttype.label")
+					form: label: $$("server.config.parameter.system.tan_settings.linked_settings.tan_objecttype.label")
 					name: fieldName
 					show_name: true
 					store_value: "fullname"
@@ -33,7 +33,7 @@ class FylrPluginLinkedObjectUseOnce extends BaseConfigPlugin
 
 			when "main_objecttype"
 				field = new ez5.ObjecttypeSelector
-					form: label: $$("server.config.parameter.system.fylr_plugin_linked_object_use_once.main_objecttype.label")
+					form: label: $$("server.config.parameter.system.tan_settings.linked_settings.main_objecttype.label")
 					name: fieldName
 					show_name: true
 					store_value: "fullname"
@@ -54,6 +54,22 @@ class FylrPluginLinkedObjectUseOnce extends BaseConfigPlugin
 
 						return true
 
+			when "tan_tag"
+				options = [
+					text: $$("server.config.parameter.system.tan_settings.linked_settings.select_tag")
+					value: null
+				]
+
+				for tagGroup in ez5.tagForm.tagGroups
+					options.push(label: tagGroup.getDisplayName())
+					for tag in tagGroup.getTags()
+						options.push
+							text: tag.getDisplayName()
+							value: tag.getId()
+				field =
+					type: CUI.Select
+					name: fieldName
+					options: options
 
 		return field
 

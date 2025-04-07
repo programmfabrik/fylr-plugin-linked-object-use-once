@@ -1,7 +1,10 @@
-key,de-DE,en-US
-server.config.name.system.tan_settings,TAN-Vergabe,TAN Settings
-server.config.parameter.system.tan_settings.linked_settings.label,Zuordnungen zwischen Hauptobjekten und TAN-Listen-Objekten,Relations between main objecttypes and TAN list objects
-server.config.parameter.system.fylr_plugin_linked_object_use_once.tan_objecttype.label,TAN-Listen-Objekttyp,TAN list objecttype
-server.config.parameter.system.fylr_plugin_linked_object_use_once.main_objecttype.label,Hauptobjekttyp,Main objecttype
-server.config.parameter.system.tan_settings.linked_settings.tagfilter.label,Tag Filter,Tag Filter
-server.config.parameter.system.tan_settings.linked_settings.tagfilter.label|hint,Nur TAN-Listen-Objekte mit diesen Tags können verlinkt werden,Only TAN list objects with these tags can be linked
+key,de-DE,R,en-US,R
+server.config.name.system.tan_settings,TAN-Vergabe,FALSE,TAN Settings,FALSE
+server.config.parameter.system.tan_settings.linked_settings.label,Zuordnungen zwischen Hauptobjekten und TAN-Listen-Objekten,FALSE,Relations between main objecttypes and TAN list objects,FALSE
+server.config.parameter.system.tan_settings.linked_settings.tan_objecttype.label,TAN-Listen-Objekttyp,FALSE,TAN list objecttype,FALSE
+server.config.parameter.system.tan_settings.linked_settings.main_objecttype.label,Hauptobjekttyp,FALSE,Main objecttype,FALSE
+server.config.parameter.system.tan_settings.linked_settings.select_tag,- Tag auswählen -,FALSE,- Select tag -,FALSE
+server.config.parameter.system.tan_settings.linked_settings.tag_before.label,"Tag ""frei""",FALSE,"Tag ""free""",FALSE
+server.config.parameter.system.tan_settings.linked_settings.tag_before.label|hint,Nur TAN-Listen-Objekte mit diesem Tag können verlinkt werden,FALSE,Only TAN list objects with this tag can be linked,FALSE
+server.config.parameter.system.tan_settings.linked_settings.tag_after.label,"Tag ""vergeben""",FALSE,"Tag ""assigned""",FALSE
+server.config.parameter.system.tan_settings.linked_settings.tag_after.label|hint,"Tag für das TAN-Listen-Objekt, nachdem es verlinkt wurde",FALSE,"After it was linked, the TAN list object will get this tag",FALSE

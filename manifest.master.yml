@@ -30,9 +30,15 @@ base_config:
             type: text
             plugin_type: main_objecttype
             position: 1
-          - name: tagfilter
-            type: tagfilter-select
+          - name: tag_before
+            type: int
+            plugin_type: tan_tag
             position: 2
+          - name: tag_after
+            type: int
+            plugin_type: tan_tag
+            position: 3
+
 
 
 # callback registration

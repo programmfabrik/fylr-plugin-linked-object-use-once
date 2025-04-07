@@ -1,12 +1,15 @@
 *.pyc
 **/__pycache__/
 *.txt
+.vscode
+.pytest_cache
 
 *~
 *.~*
 
 build
 build-info.json
+build-stamp-l10n
 *.coffee.js
 
 _data

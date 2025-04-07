@@ -8,14 +8,8 @@
                         {
                             "tan_objecttype": "disbkd_freieobjekte",
                             "main_objecttype": "disbkd_objekt",
-                            "tagfilter": {
-                                "any": [
-                                    {{ datastore `tag_id_free` }}
-                                ],
-                                "not": [
-                                    {{ datastore `tag_id_assigned` }}
-                                ]
-                            }
+                            "tag_before": {{ datastore `tag_id_free` }},
+                            "tag_after": {{ datastore `tag_id_assigned` }}
                         }
                     ]
                 }
