@@ -87,7 +87,7 @@ def main():
     updated_objects = []
 
     # iterate over the list of objects first and check if any linked tan object is linked multiple times
-    # this can happen if the group edit mode is used for more than object
+    # this can happen if the group edit mode is used for more than one object
     # this can not work, so return a special api error
     seen_linked_tan_objects = {}
     linked_tan_objects_by_object = {}
@@ -105,13 +105,17 @@ def main():
         )
 
         for tan_ot in linked_settings.keys():
+            # check if any new tan object is linked
 
-            # check if any tan object is linked
-            linked_tan_objects = util.find_linked_tan_objects(
+            current = obj.get('_current')
+            if isinstance(current, list) and len(current) > 0:
+                current = (current[0].get(main_objecttype, {}),)
+            new_linked_tan_objects = util.find_new_linked_tan_objects(
                 obj=obj.get(main_objecttype, {}),
+                current=current,
                 tan_objecttype=tan_ot,
             )
-            if len(linked_tan_objects) == 0:
+            if len(new_linked_tan_objects) == 0:
                 # nothing to do
                 continue
 
@@ -125,14 +129,14 @@ def main():
                     'tan_ot:',
                     tan_ot,
                     'linked_tan_objects:',
-                    fylr_util.dumpjs(linked_tan_objects),
+                    fylr_util.dumpjs(new_linked_tan_objects),
                     f'seen_linked_tan_objects[{tan_ot}]:',
                     fylr_util.dumpjs(seen_linked_tan_objects[tan_ot]),
                 ],
             )
 
             for s in seen_linked_tan_objects[tan_ot]:
-                for o in linked_tan_objects:
+                for o in new_linked_tan_objects:
                     if s[2] == o[2]:  # ids match
                         fylr_util.return_error_response_with_parameters(
                             error=f'{util.PLUGIN_NAME}.error.duplicate_tan_object',
@@ -143,7 +147,7 @@ def main():
                             },
                         )
 
-            seen_linked_tan_objects[tan_ot] += linked_tan_objects
+            seen_linked_tan_objects[tan_ot] += new_linked_tan_objects
 
             # store the linked tan objects for each object to handle them in the next step
             sys_id_key = obj.get('_system_object_id')
@@ -151,7 +155,7 @@ def main():
                 linked_tan_objects_by_object[sys_id_key] = {}
             if not tan_ot in linked_tan_objects_by_object[sys_id_key]:
                 linked_tan_objects_by_object[sys_id_key][tan_ot] = []
-            linked_tan_objects_by_object[sys_id_key][tan_ot] += linked_tan_objects
+            linked_tan_objects_by_object[sys_id_key][tan_ot] += new_linked_tan_objects
 
     idx = -1
     for obj in objects:
@@ -167,7 +171,7 @@ def main():
             if not tan_ot in linked_tan_objects_by_object[sys_id_key]:
                 continue
 
-            linked_tan_objects = linked_tan_objects_by_object[sys_id_key][tan_ot]
+            new_linked_tan_objects = linked_tan_objects_by_object[sys_id_key][tan_ot]
 
             # check if there is a tag before and after configured => use this to create a tagfilter
             # if the linked tan object does not match the tagfilter for a free object,
@@ -190,7 +194,7 @@ def main():
 
             # the linked tan object(s) have not been linked before
             # they need to be marked as assigned by changing the tags
-            for linked_info in linked_tan_objects:
+            for linked_info in new_linked_tan_objects:
 
                 linked_ot = linked_info[0]
                 linked_mask = linked_info[1]

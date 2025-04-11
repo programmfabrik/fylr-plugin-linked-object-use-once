@@ -5,7 +5,7 @@ from . import util
 
 
 def test_empty_dict():
-    assert util.find_linked_tan_objects({}, 'tan_ot') == []
+    assert util.__find_linked_tan_objects({}, 'tan_ot') == []
 
 
 def test_no_matches():
@@ -17,7 +17,7 @@ def test_no_matches():
             },
         },
     }
-    assert util.find_linked_tan_objects(data, 'other') == []
+    assert util.__find_linked_tan_objects(data, 'other') == []
 
 
 def test_match_in_top_level():
@@ -29,7 +29,7 @@ def test_match_in_top_level():
             },
         },
     }
-    assert util.find_linked_tan_objects(data, 'tan_ot') == [
+    assert util.__find_linked_tan_objects(data, 'tan_ot') == [
         (
             'tan_ot',
             '_all_fields',
@@ -54,7 +54,7 @@ def test_match_in_top_level():
             },
         },
     }
-    assert util.find_linked_tan_objects(data, 'tan_ot') == [
+    assert util.__find_linked_tan_objects(data, 'tan_ot') == [
         (
             'tan_ot',
             'tan_ot_mask',
@@ -85,7 +85,7 @@ def test_match_in_nested():
             },
         ]
     }
-    assert util.find_linked_tan_objects(data, 'tan_ot') == [
+    assert util.__find_linked_tan_objects(data, 'tan_ot') == [
         (
             'tan_ot',
             'mask_1',
@@ -98,3 +98,46 @@ def test_match_in_nested():
         ),
     ]
 
+
+def test_match_in_deep_nested():
+    data = {
+        '_nested:main_ot__nested_level_1': [
+            {
+                '_nested:main_ot__nested_level_1__nested_level_2': [
+                    {
+                        '_nested:main_ot__nested_level_1__nested_level_2__nested_level_3': [
+                            {
+                                'linked_tan': {
+                                    '_mask': 'mask_1',
+                                    '_objecttype': 'tan_ot',
+                                    'tan_ot': {
+                                        '_id': 123,
+                                    },
+                                },
+                            },
+                            {
+                                'linked_tan': {
+                                    '_objecttype': 'tan_ot',
+                                    'tan_ot': {
+                                        '_id': 45,
+                                    },
+                                },
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    }
+    assert util.__find_linked_tan_objects(data, 'tan_ot') == [
+        (
+            'tan_ot',
+            'mask_1',
+            123,
+        ),
+        (
+            'tan_ot',
+            '_all_fields',
+            45,
+        ),
+    ]

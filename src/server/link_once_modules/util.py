@@ -30,11 +30,12 @@ def tmplog(lines: list, new_file: bool = False):
 # -------------------------------------------
 
 
-def find_linked_tan_objects(
+def __find_linked_tan_objects(
     obj: dict,
     tan_objecttype: str,
     found: list = None,
 ) -> list[str, str, int]:  # return list of tuples of objecttype, mask, object id
+
     if found is None:
         found = []
 
@@ -57,14 +58,77 @@ def find_linked_tan_objects(
                 )
                 continue
 
-            find_linked_tan_objects(fieldvalue, tan_objecttype, found)
+            __find_linked_tan_objects(fieldvalue, tan_objecttype, found)
 
         elif isinstance(fieldvalue, list):
             for el in fieldvalue:
                 if isinstance(el, dict):
-                    find_linked_tan_objects(el, tan_objecttype, found)
+                    __find_linked_tan_objects(el, tan_objecttype, found)
 
     return found
+
+
+def find_new_linked_tan_objects(
+    obj: dict,
+    current: dict,
+    tan_objecttype: str,
+) -> list[str, str, int]:  # return list of tuples of objecttype, mask, object id
+
+    tmplog(
+        [
+            'find_new_linked_tan_objects',
+            'obj:',
+            fylr_util.dumpjs(obj),
+            'current:',
+            fylr_util.dumpjs(current),
+        ]
+    )
+
+    # collect the linked objects in the new (not yet saved) object
+    linked_objects = __find_linked_tan_objects(
+        obj=obj,
+        tan_objecttype=tan_objecttype,
+    )
+    tmplog(
+        [
+            'find_new_linked_tan_objects',
+            '=> linked_objects:',
+            fylr_util.dumpjs(linked_objects),
+        ]
+    )
+    if len(linked_objects) == 0:
+        # no linked objects in the new object version -> nothing to do
+        return linked_objects
+
+    # if the current version is not null (the object was updated), also collect these linked objects
+    if not isinstance(current, dict):
+        # no current version -> all are new
+        return linked_objects
+
+    cur_linked_objects = __find_linked_tan_objects(
+        obj=current,
+        tan_objecttype=tan_objecttype,
+    )
+    tmplog(
+        [
+            'find_new_linked_tan_objects',
+            '=> cur_linked_objects:',
+            fylr_util.dumpjs(cur_linked_objects),
+        ]
+    )
+    if len(cur_linked_objects) == 0:
+        # only new linked objects in the new object version -> nothing to do
+        return linked_objects
+
+    # filter out all linked objects that are in both lists, only the new linked objects are relevant
+    new_linked_objects = []
+
+    for lo in linked_objects:
+        if lo in cur_linked_objects:
+            continue
+        new_linked_objects.append(lo)
+
+    return new_linked_objects
 
 
 def incremented_linked_object(
