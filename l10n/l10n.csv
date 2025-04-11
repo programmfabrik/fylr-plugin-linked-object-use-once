@@ -18,17 +18,17 @@ fylr-plugin-linked-object-use-once.error.could_not_load_tan_object,"Die aktuelle
 
 * Fehler: `%(msg)s`
 * HTTP Status: `%(statuscode)i`
-* Details (Response): `%(response)i`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be loaded:
+* Details (Response): `%(response)s`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be loaded:
 
 * Error: `%(msg)s`
 * HTTP Status: `%(statuscode)i`
-* Details (Response): `%(response)i`",FALSE
+* Details (Response): `%(response)s`",FALSE
 fylr-plugin-linked-object-use-once.error.could_not_update_tan_object,"Die neue Version des `%(tan_objecttype)s` Objekts mit der ID `%(tan_obj_id)i` kann nicht aktualisiert werden:
 
 * Fehler: `%(msg)s`
 * HTTP Status: `%(statuscode)i`
-* Details (Response): `%(response)i`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be updated:
+* Details (Response): `%(response)s`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be updated:
 
 * Error: `%(msg)s`
 * HTTP Status: `%(statuscode)i`
-* Details (Response): `%(response)i`",FALSE
+* Details (Response): `%(response)s`",FALSE
