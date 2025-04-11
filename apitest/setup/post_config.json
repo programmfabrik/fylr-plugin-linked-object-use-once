@@ -3,7 +3,7 @@
         "name": "post config",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "config",
             "method": "POST",

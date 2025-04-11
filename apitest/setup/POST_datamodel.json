@@ -3,7 +3,7 @@
         "name": "upload schema",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "schema/user/HEAD",
             "method": "POST",
@@ -14,7 +14,7 @@
         "name": "upload mask",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "mask/HEAD",
             "method": "POST",
@@ -25,7 +25,7 @@
         "name": "upload keys",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "l10n/user/HEAD",
             "method": "POST",

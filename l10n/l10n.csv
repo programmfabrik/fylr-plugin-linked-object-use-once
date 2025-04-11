@@ -8,3 +8,27 @@ server.config.parameter.system.tan_settings.linked_settings.tag_before.label,"Ta
 server.config.parameter.system.tan_settings.linked_settings.tag_before.label|hint,Nur TAN-Listen-Objekte mit diesem Tag können verlinkt werden,FALSE,Only TAN list objects with this tag can be linked,FALSE
 server.config.parameter.system.tan_settings.linked_settings.tag_after.label,"Tag ""vergeben""",FALSE,"Tag ""assigned""",FALSE
 server.config.parameter.system.tan_settings.linked_settings.tag_after.label|hint,"Tag für das TAN-Listen-Objekt, nachdem es verlinkt wurde",FALSE,"After it was linked, the TAN list object will get this tag",FALSE
+fylr-plugin-linked-object-use-once.error.duplicate_tan_object,"Das `%(tan_objecttype)s` Objekt mit der ID `%(tan_obj_id)i` kann nicht für mehrere Objekte gleichzeitig vergeben werden.
+
+Die Vergabe von TAN-Listen-Objekten im Gruppeneditor ist **nicht möglich**!",FALSE,"The `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be assigned to multiple objects at the same time.
+
+Assigning TAN list objects is **not possible** in group edit mode!",FALSE
+fylr-plugin-linked-object-use-once.error.tan_object_already_linked,Das `%(tan_objecttype)s` Objekt mit der ID `%(tan_obj_id)i` ist bereits vergeben.,FALSE,The `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` is already assigned.,FALSE
+fylr-plugin-linked-object-use-once.error.could_not_load_tan_object,"Die aktuelle Version des `%(tan_objecttype)s` Objekts mit der ID `%(tan_obj_id)i` kann nicht geladen werden:
+
+* Fehler: `%(msg)s`
+* HTTP Status: `%(statuscode)i`
+* Details (Response): `%(response)i`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be loaded:
+
+* Error: `%(msg)s`
+* HTTP Status: `%(statuscode)i`
+* Details (Response): `%(response)i`",FALSE
+fylr-plugin-linked-object-use-once.error.could_not_update_tan_object,"Die neue Version des `%(tan_objecttype)s` Objekts mit der ID `%(tan_obj_id)i` kann nicht aktualisiert werden:
+
+* Fehler: `%(msg)s`
+* HTTP Status: `%(statuscode)i`
+* Details (Response): `%(response)i`",FALSE,"The current version of the `%(tan_objecttype)s` object with ID `%(tan_obj_id)i` can not be updated:
+
+* Error: `%(msg)s`
+* HTTP Status: `%(statuscode)i`
+* Details (Response): `%(response)i`",FALSE

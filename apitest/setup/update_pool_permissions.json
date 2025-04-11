@@ -1,0 +1,74 @@
+{
+    "name": "POST /api/v1/pool",
+    "request": {
+        "endpoint": "pool",
+        "method": "POST",
+        "body": [
+            {
+                "_acl": [
+                    {
+                        "active": true,
+                        "rights": {
+                            "bag_read": {},
+                            "create": {
+                                "objecttype_ids": [
+                                    16
+                                ]
+                            },
+                            "mask": {
+                                "mask_ids": {
+                                    "16": [
+                                        "standard"
+                                    ]
+                                }
+                            },
+                            "write": {
+                                "_grantable": false,
+                                "objecttype_ids": [
+                                    16
+                                ]
+                            },
+                            "link": {
+                                "objecttype_ids": [
+                                    16
+                                ]
+                            }
+                        },
+                        "sticky": false,
+                        "when": {},
+                        "who": {
+                            "_basetype": "user",
+                            "user": {
+                                "lookup:_id": {
+                                    "reference": "testuser"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "_basetype": "pool",
+                "_standard_masks": {
+                    "16": null
+                },
+                "_transitions": [],
+                "pool": {
+                    "lookup:_id": {
+                        "reference": "system:root"
+                    },
+                    "_version": 2,
+                    "description": {},
+                    "mapping_dc_export": "objecttype",
+                    "mapping_image_export": "objecttype",
+                    "mapping_image_import": "objecttype",
+                    "name": {
+                        "de-DE": "Alle Pools",
+                        "en-US": "All pools"
+                    }
+                }
+            }
+        ]
+    },
+    "response": {
+        "statuscode": 200
+    }
+}

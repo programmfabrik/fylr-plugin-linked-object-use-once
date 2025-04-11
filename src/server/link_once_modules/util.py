@@ -78,7 +78,20 @@ def incremented_linked_object(
     if not isinstance(version, int):
         return None
 
-    new_obj = obj.copy()
+    new_obj = {}
+    for k in obj:
+        if k in [
+            '_acl',
+            '_best_mask',
+            '_collections',
+            '_comment',
+            '_generated_rights',
+            '_mask_display_name',
+            '_objecttype_display_name',
+        ]:
+            continue
+        new_obj[k] = obj[k]
+
     new_obj[objecttype]['_version'] = version + 1
 
     # if tags are given (id > 0) and the linked object has tags, replace tags
@@ -106,4 +119,3 @@ def incremented_linked_object(
     new_obj['_tags'] = new_tags
 
     return new_obj
-

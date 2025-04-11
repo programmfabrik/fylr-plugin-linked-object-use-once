@@ -1,7 +1,0 @@
-[
-    "@setup/all.json",
-    "@insert_tags.json",
-    "@setup/post_config.json",
-    "@insert_objektnummer_tan.json",
-    "@setup/poll_events.json"
-]

@@ -33,7 +33,7 @@
             "endpoint": "system/status",
             "method": "GET",
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             }
         },
         "collect_response": [

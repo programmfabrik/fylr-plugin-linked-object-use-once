@@ -13,15 +13,20 @@ def main():
     orig_data = json.loads(sys.stdin.read())
     util.tmplog(
         [
+            '##################################################',
             fylr_util.dumpjs(orig_data),
-            '----------------------------',
         ],
-        new_file=True,
+        # new_file=True, # xxx
     )
 
     # get the objects from the input data
     objects = orig_data.get('objects', [])
     if len(objects) == 0:
+        util.tmplog(
+            [
+                'len(objects) == 0',
+            ],
+        )
         fylr_util.return_empty_objects()
 
     # load the configuration and
@@ -49,6 +54,11 @@ def main():
         )
 
     if len(linked_settings) == 0:
+        util.tmplog(
+            [
+                'len(linked_settings) == 0',
+            ],
+        )
         fylr_util.return_empty_objects()
 
     # get the server urls
@@ -75,11 +85,26 @@ def main():
         fylr_util.return_error_response('info.api_user_access_token missing!')
 
     updated_objects = []
+
+    # iterate over the list of objects first and check if any linked tan object is linked multiple times
+    # this can happen if the group edit mode is used for more than object
+    # this can not work, so return a special api error
+    seen_linked_tan_objects = {}
+    linked_tan_objects_by_object = {}
     idx = -1
     for obj in objects:
         idx += 1
 
-        for tan_ot, tag_ids in linked_settings.items():
+        util.tmplog(
+            [
+                '*****************************************************************************',
+                f'obj #{idx}',
+                'tan_ots:',
+                list(linked_settings.keys()),
+            ],
+        )
+
+        for tan_ot in linked_settings.keys():
 
             # check if any tan object is linked
             linked_tan_objects = util.find_linked_tan_objects(
@@ -89,6 +114,60 @@ def main():
             if len(linked_tan_objects) == 0:
                 # nothing to do
                 continue
+
+            # check if the linked tan object was already seen in another object
+            # => throw an api error
+            if not tan_ot in seen_linked_tan_objects:
+                seen_linked_tan_objects[tan_ot] = []
+
+            util.tmplog(
+                [
+                    'tan_ot:',
+                    tan_ot,
+                    'linked_tan_objects:',
+                    fylr_util.dumpjs(linked_tan_objects),
+                    f'seen_linked_tan_objects[{tan_ot}]:',
+                    fylr_util.dumpjs(seen_linked_tan_objects[tan_ot]),
+                ],
+            )
+
+            for s in seen_linked_tan_objects[tan_ot]:
+                for o in linked_tan_objects:
+                    if s[2] == o[2]:  # ids match
+                        fylr_util.return_error_response_with_parameters(
+                            error=f'{util.PLUGIN_NAME}.error.duplicate_tan_object',
+                            parameters={
+                                'idx': idx,
+                                'tan_objecttype': tan_ot,
+                                'tan_obj_id': s[2],
+                            },
+                        )
+
+            seen_linked_tan_objects[tan_ot] += linked_tan_objects
+
+            # store the linked tan objects for each object to handle them in the next step
+            sys_id_key = obj.get('_system_object_id')
+            if not sys_id_key in linked_tan_objects_by_object:
+                linked_tan_objects_by_object[sys_id_key] = {}
+            if not tan_ot in linked_tan_objects_by_object[sys_id_key]:
+                linked_tan_objects_by_object[sys_id_key][tan_ot] = []
+            linked_tan_objects_by_object[sys_id_key][tan_ot] += linked_tan_objects
+
+    idx = -1
+    for obj in objects:
+        idx += 1
+
+        for tan_ot, tag_ids in linked_settings.items():
+
+            # check if any tan object is linked
+
+            sys_id_key = obj.get('_system_object_id')
+            if not sys_id_key in linked_tan_objects_by_object:
+                continue
+            if not tan_ot in linked_tan_objects_by_object[sys_id_key]:
+                continue
+
+            linked_tan_objects = linked_tan_objects_by_object[sys_id_key][tan_ot]
 
             # check if there is a tag before and after configured => use this to create a tagfilter
             # if the linked tan object does not match the tagfilter for a free object,
@@ -131,14 +210,6 @@ def main():
                         api_url=f'{api_url}/api/v1',
                         path=f'db/{linked_ot}/{linked_mask}/{linked_obj_id}?format=long',
                         access_token=access_token,
-                        log_in_tmp_file=True,
-                    )
-                    util.tmplog(
-                        [
-                            'linked_tan_object: get',
-                            statuscode,
-                            resp,
-                        ],
                     )
 
                     loaded_linked_object = None
@@ -157,6 +228,9 @@ def main():
                         fylr_util.return_error_response_with_parameters(
                             error=f'{util.PLUGIN_NAME}.error.could_not_load_tan_object',
                             parameters={
+                                'idx': idx,
+                                'tan_objecttype': linked_ot,
+                                'tan_obj_id': linked_obj_id,
                                 'msg': str(e),
                                 'statuscode': statuscode,
                                 'response': resp,
@@ -168,17 +242,8 @@ def main():
                             error=f'{util.PLUGIN_NAME}.error.tan_object_already_linked',
                             parameters={
                                 'idx': idx,
-                                'tan_objecttype': tan_ot,
-                                'tan_obj_sysid': fylr_util.get_json_value(
-                                    loaded_linked_object,
-                                    '_system_object_id',
-                                    default=0,
-                                ),
-                                'tan_obj_id': fylr_util.get_json_value(
-                                    loaded_linked_object,
-                                    f'{tan_ot}._id',
-                                    default=0,
-                                ),
+                                'tan_objecttype': linked_ot,
+                                'tan_obj_id': linked_obj_id,
                             },
                         )
 
@@ -192,13 +257,6 @@ def main():
                         # xxx exception? ignore?
                         continue
 
-                    util.tmplog(
-                        [
-                            'updated linked_tan_object:',
-                            fylr_util.dumpjs(updated_linked_object),
-                        ],
-                    )
-
                     resp, statuscode = fylr_util.post_to_api(
                         api_url=f'{api_url}/api/v1',
                         path=f'db/{linked_ot}',
@@ -208,16 +266,7 @@ def main():
                                 updated_linked_object,
                             ]
                         ),
-                        log_in_tmp_file=True,
                     )
-                    util.tmplog(
-                        [
-                            'linked_tan_object: post',
-                            statuscode,
-                            resp,
-                        ],
-                    )
-
                     if statuscode == 200:
                         # update was successful, nothing else to do
                         break
@@ -236,6 +285,9 @@ def main():
                         fylr_util.return_error_response_with_parameters(
                             error=f'{util.PLUGIN_NAME}.error.could_not_update_tan_object',
                             parameters={
+                                'idx': idx,
+                                'tan_objecttype': linked_ot,
+                                'tan_obj_id': linked_obj_id,
                                 'msg': str(e),
                                 'statuscode': statuscode,
                                 'response': resp,

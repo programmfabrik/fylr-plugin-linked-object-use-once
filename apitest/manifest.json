@@ -10,7 +10,7 @@
 {
     "name": "fylr-plugin-linked-object-use-once",
     "header_from_store": {
-        "Authorization": "root-token"
+        "Authorization": "access_token"
     },
     "store": {
         "setup_datamodel": {{ file "setup/fylr--datamodel-HEAD.json" | marshal }},
@@ -19,40 +19,19 @@
         // tests with root account
         {
             "store": {
-                "user": "root",
-                "expect_error": false,
+                "user": "root"
             }
         }
-
-        // single editor instance saves objects
-        , "@prepare.json"
+        , "@setup/all.json"
         , "@testcases.json"
 
-
-        // // tests with test user account with minimal objecttype permissions
-        // , {
-        //     "store": {
-        //         "user": "testuser1",
-        //         "expect_error": false,
-        //     }
-        // }
-
-        // // single editor instance saves objects
-        // , "@prepare.json"
-        // , "@testcases.json"
-
-
-        // // tests with test user account with missing objecttype permissions
-        // // test corner cases and internal errors
-        // , {
-        //     "store": {
-        //         "user": "testuser2",
-        //         "expect_error": true,
-        //     }
-        // }
-
-        // // single editor instance saves objects
-        // , "@prepare.json"
-        // , "@testcases.json"
+        // tests with test user account with minimal objecttype permissions
+        , {
+            "store": {
+                "user": "testuser"
+            }
+        }
+        , "@setup/all.json"
+        , "@testcases.json"
     ]
 }

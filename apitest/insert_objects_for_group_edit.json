@@ -1,0 +1,32 @@
+[
+    {{ range $idx, $n := N 5 }}
+    {
+        "name": "POST /api/v1/db/disbkd_objekt without TAN #{{ $idx }}",
+        "request": {
+            "body": [
+                {
+                    "_mask": "objektmaske_disbkd__erweitert_betatester_und_admin",
+                    "_objecttype": "disbkd_objekt",
+                    "disbkd_objekt": {
+                        "_pool": {
+                            "pool": {
+                                "lookup:_id": {
+                                    "reference": "system:standard"
+                                }
+                            }
+                        },
+                        "_version": 1,
+                        "objid": "[group edit mode] {{ add $idx 1 }}"
+                    }
+                }
+            ],
+            "endpoint": "db/disbkd_objekt",
+            "method": "POST"
+        },
+        "store_response_gjson": {
+            "global_object_ids[]": "body.0._global_object_id",
+            "disbkd_objekt_{{ $idx }}_id": "body.0.disbkd_objekt._id"
+        }
+    },
+    {{ end }}
+]

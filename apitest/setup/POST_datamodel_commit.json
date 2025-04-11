@@ -4,7 +4,7 @@
         "name": "commit schema",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "schema/commit",
             "query_params": {

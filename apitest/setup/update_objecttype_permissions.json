@@ -1,14 +1,45 @@
 {
     "name": "POST /api/v1/objecttype",
     "request": {
-        "body": [
-            // TODO XXX
-            // update necessary objecttypes with minimal permissions for testuser1
-            // testuser2 has no rights on objects to test internal error handling in the plugin
-
-        ],
         "endpoint": "objecttype",
-        "method": "POST"
+        "method": "POST",
+        "body": [
+            {
+                "_acl": [
+                    {
+                        "active": true,
+                        "rights": {
+                            "mask": {
+                                "mask_ids": {
+                                    "212": [
+                                        "standard"
+                                    ]
+                                }
+                            },
+                            "write": {
+                                "_grantable": false
+                            }
+                        },
+                        "who": {
+                            "_basetype": "user",
+                            "user": {
+                                "lookup:_id": {
+                                    "reference": "testuser"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "_basetype": "objecttype",
+                "objecttype": {
+                    "_id": 212,
+                    "_version": 2,
+                    "mapping_dc_export": "none",
+                    "mapping_image_export": "none",
+                    "mapping_image_import": "none"
+                }
+            }
+        ]
     },
     "response": {
         "statuscode": 200

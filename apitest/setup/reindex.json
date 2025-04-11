@@ -3,7 +3,7 @@
         "name": "reindex (blockFrontend=1)...",
         "request": {
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             },
             "endpoint": "system/reindex",
             "query_params": {
@@ -24,7 +24,7 @@
             "endpoint": "system/status",
             "method": "GET",
             "header_from_store": {
-                "Authorization": "root-token"
+                "Authorization": "access_token"
             }
         }
         ,"collect_response": [

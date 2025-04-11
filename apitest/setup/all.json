@@ -6,14 +6,16 @@
     ,"@root_session.json"
     ,"@POST_datamodel_commit.json"
     ,"@../plugin/all.json"
+    ,"@../insert_tags.json"
+    ,"@post_config.json"
+    ,"@../insert_objektnummer_tan.json"
+    ,"@../insert_objects_for_group_edit.json"
+    ,"@poll_events.json"
     // check if a test user is used for login, else root
-    {{ if eq (datastore `user`) "testuser1" }}
-        ,"@create_testusers.json"
+    {{ if ne (datastore `user`) "root" }}
+        ,"@create_testuser.json"
+        ,"@update_pool_permissions.json"
         ,"@update_objecttype_permissions.json"
-        ,"@testuser1_session.json"
-    {{ else if eq (datastore `user`) "testuser2" }}
-        ,"@create_testusers.json"
-        ,"@update_objecttype_permissions.json"
-        ,"@testuser2_session.json"
+        ,"@testuser_session.json"
     {{ end }}
 ]
