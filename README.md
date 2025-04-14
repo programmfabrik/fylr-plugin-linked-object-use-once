@@ -58,15 +58,12 @@ Under "TAN Settings", multiple entries can be added to the table "Relations betw
     * Select one of the objecttypes to use for TAN list objects
     * Only objecttypes with tag management are available
     * It must be linked in the main objecttype
-
 * Main objecttype:
     * Main objecttype which links to the TAN list objecttype
-
 * Tag "free":
     * Tag which indicates that a TAN list object is still free and can be assigned
     * The plugin checks if a newly linked TAN object has this tag
     * After saving, this tag will be removed from the linked TAN list object
-
 * Tag "assigned":
     * Tag which indicates that a TAN list object is already assigned and can not be linked
     * The plugin checks if a newly linked TAN object does not have this tag
@@ -83,6 +80,8 @@ If any of the linked TAN objects already has a tag "assigned", an api error is t
 
 
 ## Error Messages
+
+See also: [detailed l10n keys](l10n/README.md)
 
 #### `fylr-plugin-linked-object-use-once.error.duplicate_tan_object`
 
