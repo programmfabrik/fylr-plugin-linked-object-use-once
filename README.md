@@ -9,6 +9,15 @@ These linked objects will be called "TAN (list) objects" here, the objects which
 Objects and Tags are configured in the base configuration (see below).
 
 
+## Installation
+
+In fylr, open the Plugin Manager, and add a new plugin with type `url`, and enter the URL:
+
+[`https://github.com/programmfabrik/fylr-plugin-linked-object-use-once/releases/latest/download/fylr-plugin-linked-object-use-once.zip`](https://github.com/programmfabrik/fylr-plugin-linked-object-use-once/releases/latest/download/fylr-plugin-linked-object-use-once.zip)
+
+This URL always links to the ZIP file of the latest release, so it is updated automatically after a new version has been released.
+
+
 ## Key Features
 
 * The Plugin checks if a new or updated object contains any linked TAN list object which was not linked before
