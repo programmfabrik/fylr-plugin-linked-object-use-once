@@ -1,6 +1,6 @@
 # fylr-plugin-linked-object-use-once
 
-This plugin provides the possibity to allow the linking of specific objects only once. If another object tries to link to these objects, an api error is thrown. This can be used to identify objects with a unique linked object.
+This plugin **for fylr** provides the possibity to allow the linking of specific objects only once. If another object tries to link to these objects, an api error is thrown. This can be used to identify objects with a unique linked object.
 
 These linked objects can be used to allow identifiers from a unique, prepared list of values. This gives the possibility to use lists of objects with prefilled values like values from a TAN list. To identify an object as "assigned", tags are used.
 
