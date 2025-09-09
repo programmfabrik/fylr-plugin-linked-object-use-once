@@ -1,0 +1,61 @@
+{
+    "name": "POST /api/v1/db/disbkd_objekt | TAN object was linked before, must be ignored for this update - confirm transition",
+    "request": {
+        "body": [
+            {
+                "_mask": "objektmaske_disbkd__erweitert_betatester_und_admin",
+                "_objecttype": "disbkd_objekt",
+                "disbkd_objekt": {
+                    "_pool": {
+                        "pool": {
+                            "lookup:_id": {
+                                "reference": "system:standard"
+                            }
+                        }
+                    },
+                    "_version": 2,
+                    "lookup:_id": {
+                        "objid": "[single edit mode] 2 | TAN: 0003"
+                    },
+                    "objektnummer_tan": {
+                        "_mask": "disbkd_freieobjekte__all_fields",
+                        "_objecttype": "disbkd_freieobjekte",
+                        "disbkd_freieobjekte": {
+                            "lookup:_id": {
+                                "objektnummer": "0003"
+                            }
+                        }
+                    },
+                    "objid": "[single edit mode] 2 | TAN: 0003"
+                }
+            }
+        ],
+        "endpoint": "db/disbkd_objekt",
+        "method": "POST",
+        "query_params": {
+            "confirmTransition": {{ datastore `confirm_code` | marshal }},
+            "format": "long"
+        }
+    },
+    "response": {
+        "statuscode": 200,
+        "body": [
+            {
+                "disbkd_objekt": {
+                    "objektnummer_tan": {
+                        "_tags:control": {
+                            "no_extra": true
+                        },
+                        "_tags": [
+                            {
+                                "reference": "assigned"
+                            }
+                        ],
+                        "disbkd_freieobjekte": {}
+                    },
+                    "objid": "[single edit mode] 2 | TAN: 0003"
+                }
+            }
+        ]
+    }
+}

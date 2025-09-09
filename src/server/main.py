@@ -1,46 +1,42 @@
 # coding=utf8
 
 
-from fylr_lib_plugin_python3 import util as fylr_util
+from fylr_lib_plugin_python3 import util as fylr_util, plugin_info_json
 from link_once_modules import util
 
 import json
-import sys
 
 
 def main():
 
-    orig_data = json.loads(sys.stdin.read())
-    util.tmplog(
-        [
-            '##################################################',
-            fylr_util.dumpjs(orig_data),
-        ],
-        # new_file=True, # xxx
-    )
+    info_json = plugin_info_json.PluginCallbackInfo(util.PLUGIN_NAME)
+    info_json.parse_from_stdin()
+
+    # if there are transitions which need to be confirmed,
+    # the same callback is executed multiple times.
+    # this causes problems if the linked tan object is updated
+    # in the first request, in later requests the "assigned" tag
+    # is already set by the plugin and a error would be thrown.
+    # the plugin must only check and update the tan object
+    # if the query parameters suggest the requests are not
+    # repeated requests during a 202 process.
+
+    if util.is_in_202_process(info_json):
+        fylr_util.return_empty_objects()
 
     # get the objects from the input data
-    objects = orig_data.get('objects', [])
+    objects = info_json.get_object_list()
     if len(objects) == 0:
-        util.tmplog(
-            [
-                'len(objects) == 0',
-            ],
-        )
         fylr_util.return_empty_objects()
 
     # load the configuration and
     # check if the current objects are relevant
-    main_objecttype = objects[0].get('_objecttype')
+    main_objecttype = info_json.get_main_objecttype()
 
     # map: linked tan objecttypes -> (tag id (before), tag id (after))
     linked_settings = {}
 
-    for s in fylr_util.get_json_value(
-        orig_data,
-        'info.config.plugin.fylr-plugin-linked-object-use-once.config.tan_settings.linked_settings',
-        default=[],
-    ):
+    for s in info_json.get_list_from_plugin_config('tan_settings.linked_settings'):
         if main_objecttype != s.get('main_objecttype'):
             continue
 
@@ -53,34 +49,19 @@ def main():
             s.get('tag_after', 0),
         )
 
-    if len(linked_settings) == 0:
-        util.tmplog(
-            [
-                'len(linked_settings) == 0',
-            ],
-        )
+    if not linked_settings:
         fylr_util.return_empty_objects()
 
     # get the server urls
-    external_url = fylr_util.get_json_value(
-        orig_data,
-        'info.external_url',
-    )
+    external_url = info_json.get_external_url()
     if not external_url:
         fylr_util.return_error_response('info.external_url missing!')
-
-    api_url = fylr_util.get_json_value(
-        orig_data,
-        'info.api_url',
-    )
+    api_url = info_json.get_api_url()
     if not api_url:
         fylr_util.return_error_response('info.api_url missing!')
 
     # get a session token
-    access_token = fylr_util.get_json_value(
-        orig_data,
-        'info.api_user_access_token',
-    )
+    access_token = info_json.get_access_token()
     if not access_token:
         fylr_util.return_error_response('info.api_user_access_token missing!')
 
@@ -95,21 +76,14 @@ def main():
     for obj in objects:
         idx += 1
 
-        util.tmplog(
-            [
-                '*****************************************************************************',
-                f'obj #{idx}',
-                'tan_ots:',
-                list(linked_settings.keys()),
-            ],
-        )
-
         for tan_ot in linked_settings.keys():
             # check if any new tan object is linked
 
-            current = obj.get('_current')
+            current = obj.get('_current', {})
             if isinstance(current, list) and len(current) > 0:
-                current = (current[0].get(main_objecttype, {}),)
+                current = current[0].get(main_objecttype, {})
+            if not isinstance(current, dict):
+                current = {}
             new_linked_tan_objects = util.find_new_linked_tan_objects(
                 obj=obj.get(main_objecttype, {}),
                 current=current,
@@ -123,17 +97,6 @@ def main():
             # => throw an api error
             if not tan_ot in seen_linked_tan_objects:
                 seen_linked_tan_objects[tan_ot] = []
-
-            util.tmplog(
-                [
-                    'tan_ot:',
-                    tan_ot,
-                    'linked_tan_objects:',
-                    fylr_util.dumpjs(new_linked_tan_objects),
-                    f'seen_linked_tan_objects[{tan_ot}]:',
-                    fylr_util.dumpjs(seen_linked_tan_objects[tan_ot]),
-                ],
-            )
 
             for s in seen_linked_tan_objects[tan_ot]:
                 for o in new_linked_tan_objects:
@@ -216,7 +179,7 @@ def main():
                         access_token=access_token,
                     )
 
-                    loaded_linked_object = None
+                    loaded_linked_object = {}
                     try:
                         if statuscode != 200:
                             # could not load linked object -> api error

@@ -45,11 +45,11 @@ base_config:
 callbacks:
   db_pre_save:
     steps:
-      - name: "todo"
-        callback: todo
+      - name: "check linked tan list object"
+        callback: check_linked_tan
 
     callbacks:
-      todo:
+      check_linked_tan:
         exec:
           service: python3
           commands:

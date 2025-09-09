@@ -21,7 +21,10 @@
                 }
             ],
             "endpoint": "db/disbkd_objekt",
-            "method": "POST"
+            "method": "POST",
+            "query_params": {
+                "confirmTransition": "ALL"
+            }
         },
         "store_response_gjson": {
             "global_object_ids[]": "body.0._global_object_id",

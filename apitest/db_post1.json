@@ -1,0 +1,50 @@
+{
+    "name": "POST /api/v1/db/disbkd_objekt | TAN already assigned: expect tan_object_already_linked error",
+    "request": {
+        "body": [
+            {
+                "_mask": "objektmaske_disbkd__erweitert_betatester_und_admin",
+                "_objecttype": "disbkd_objekt",
+                "disbkd_objekt": {
+                    "_pool": {
+                        "pool": {
+                            "lookup:_id": {
+                                "reference": "system:standard"
+                            }
+                        }
+                    },
+                    "_version": 1,
+                    "objektnummer_tan": {
+                        "_mask": "disbkd_freieobjekte__all_fields",
+                        "_objecttype": "disbkd_freieobjekte",
+                        "disbkd_freieobjekte": {
+                            "lookup:_id": {
+                                "objektnummer": "0001"
+                            }
+                        }
+                    },
+                    "objid": "[single edit mode] 1 | TAN: 0001"
+                }
+            }
+        ],
+        "endpoint": "db/disbkd_objekt",
+        "method": "POST",
+        "query_params": {
+            "format": "long"
+        }
+    },
+    "response": {
+        "statuscode": 400,
+        "body": {
+            "code": "fylr-plugin-linked-object-use-once.error.tan_object_already_linked",
+            "parameters": {
+                "idx": 0,
+                "tan_obj_id:control": {
+                    "is_number": true
+                },
+                "tan_objecttype": "disbkd_freieobjekte"
+            },
+            "realm": "api"
+        }
+    }
+}

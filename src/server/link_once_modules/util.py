@@ -1,15 +1,8 @@
 # coding=utf8
 
 
-import json
-import os
+from fylr_lib_plugin_python3 import util as fylr_util, plugin_info_json
 
-from fylr_lib_plugin_python3 import util as fylr_util
-
-from datetime import datetime
-
-
-# -------------------------------------------
 
 PLUGIN_NAME = 'fylr-plugin-linked-object-use-once'
 
@@ -24,20 +17,12 @@ def tmplog(lines: list, new_file: bool = False):
         new_file,
     )
 
-    return
-
-
-# -------------------------------------------
-
 
 def __find_linked_tan_objects(
     obj: dict,
     tan_objecttype: str,
-    found: list = None,
-) -> list[str, str, int]:  # return list of tuples of objecttype, mask, object id
-
-    if found is None:
-        found = []
+    found: list,
+) -> list[tuple[str, str, int]]:  # return list of tuples of objecttype, mask, object id
 
     for fieldname, fieldvalue in obj.items():
         if fieldname.startswith('_') and not fieldname.startswith('_nested:'):
@@ -72,31 +57,15 @@ def find_new_linked_tan_objects(
     obj: dict,
     current: dict,
     tan_objecttype: str,
-) -> list[str, str, int]:  # return list of tuples of objecttype, mask, object id
-
-    tmplog(
-        [
-            'find_new_linked_tan_objects',
-            'obj:',
-            fylr_util.dumpjs(obj),
-            'current:',
-            fylr_util.dumpjs(current),
-        ]
-    )
+) -> list[tuple[str, str, int]]:  # return list of tuples of objecttype, mask, object id
 
     # collect the linked objects in the new (not yet saved) object
     linked_objects = __find_linked_tan_objects(
         obj=obj,
         tan_objecttype=tan_objecttype,
+        found=[],
     )
-    tmplog(
-        [
-            'find_new_linked_tan_objects',
-            '=> linked_objects:',
-            fylr_util.dumpjs(linked_objects),
-        ]
-    )
-    if len(linked_objects) == 0:
+    if not linked_objects:
         # no linked objects in the new object version -> nothing to do
         return linked_objects
 
@@ -108,15 +77,9 @@ def find_new_linked_tan_objects(
     cur_linked_objects = __find_linked_tan_objects(
         obj=current,
         tan_objecttype=tan_objecttype,
+        found=[],
     )
-    tmplog(
-        [
-            'find_new_linked_tan_objects',
-            '=> cur_linked_objects:',
-            fylr_util.dumpjs(cur_linked_objects),
-        ]
-    )
-    if len(cur_linked_objects) == 0:
+    if not cur_linked_objects:
         # only new linked objects in the new object version -> nothing to do
         return linked_objects
 
@@ -140,7 +103,7 @@ def incremented_linked_object(
 
     version = fylr_util.get_json_value(obj, f'{objecttype}._version', default=None)
     if not isinstance(version, int):
-        return None
+        return {}
 
     new_obj = {}
     for k in obj:
@@ -183,3 +146,18 @@ def incremented_linked_object(
     new_obj['_tags'] = new_tags
 
     return new_obj
+
+
+def is_in_202_process(info_json: plugin_info_json.PluginCallbackInfo) -> bool:
+    # check the confirmTransition query parameter.
+    # if it is not set or one of the fylr keywords, there is no 202 process
+    ct = info_json.get_query_parameter('confirmTransition')
+    if not ct:
+        return False
+    if ct.lower() in [
+        'all',
+        'skip',
+    ]:
+        return False
+
+    return True
