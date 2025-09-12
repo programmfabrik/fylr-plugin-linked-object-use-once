@@ -149,15 +149,26 @@ def incremented_linked_object(
 
 
 def is_in_202_process(info_json: plugin_info_json.PluginCallbackInfo) -> bool:
-    # check the confirmTransition query parameter.
-    # if it is not set or one of the fylr keywords, there is no 202 process
-    ct = info_json.get_query_parameter('confirmTransition')
-    if not ct:
-        return False
-    if ct.lower() in [
-        'all',
-        'skip',
-    ]:
-        return False
+    # check the query parameters, find parameters which are task confirm keys
+    # if it is not set or set to one of the fylr keywords, there is no 202 process
+    for confirmKey, confirmValues in {
+        'allow_invalid_acl': [],
+        'background_invalid_acl': [],
+        'confirm': [],
+        'confirmTransition': [],
+        'confirm_collection_policy': [],
+        'delete_policy': [],
+        'revoke': [],
+        'revoke:confirmTransition': ['all', 'skip'],
+    }.items():
+        ct = info_json.get_query_parameter(confirmKey)
+        if not ct:
+            continue
 
-    return True
+        for v in confirmValues:
+            if ct.lower().endswith(v):
+                return False
+
+        return True
+
+    return False
