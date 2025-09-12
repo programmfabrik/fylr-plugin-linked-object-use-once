@@ -7,7 +7,7 @@
     ,"@POST_datamodel_commit.json"
     ,"@../plugin/all.json"
     ,"@../insert_tags.json"
-    ,"@../insert_transition.json"
+    ,"@../insert_transitions.json"
     ,"@post_config.json"
     ,"@../insert_objektnummer_tan.json"
     ,"@../insert_objects_for_group_edit.json"

@@ -1,0 +1,62 @@
+{
+    "name": "POST /api/v1/transitions",
+    "request": {
+        "body": [
+            {
+                "comment": "first transition which must be confirmed, which causes the same db request to be sent multiple times",
+                "confirm": {
+                    "de-DE": "Best\udce4tigen!",
+                    "en-US": "Confirm!"
+                },
+                "objecttype_ids": [
+                    16
+                ],
+                "operations": [
+                    "INSERT",
+                    "UPDATE"
+                ],
+                "type": "process",
+                "who": [
+                    {
+                        "_basetype": "group",
+                        "group": {
+                            "lookup:_id": {
+                                "reference": "system::all"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "comment": "second transition which must be confirmed, which causes the same db request to be sent multiple times",
+                "confirm": {
+                    "de-DE": "Auch best\udce4tigen!",
+                    "en-US": "Confirm as well!"
+                },
+                "objecttype_ids": [
+                    16
+                ],
+                "operations": [
+                    "INSERT",
+                    "UPDATE"
+                ],
+                "type": "process",
+                "who": [
+                    {
+                        "_basetype": "group",
+                        "group": {
+                            "lookup:_id": {
+                                "reference": "system::all"
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "endpoint": "transitions",
+        "method": "POST"
+    },
+    "response": {
+        "statuscode": 200
+    }
+}
