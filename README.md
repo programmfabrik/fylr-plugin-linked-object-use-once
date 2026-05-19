@@ -49,6 +49,8 @@ Further optional objecttype settings, which are not enforced but strongly **reco
 
 These objects need at least one link to one of the TAN list objects.
 
+⚠️ Limitation Warning: If your main object has fields which are marked as DB_NOT_NULL in the datamodel, also enable the `required` option for the field, so validation will not allow saving empty values. If not marked as `required`, the plugin will run before validation, thus failing.
+
 
 ### Rights management
 
@@ -69,6 +71,7 @@ Under "TAN Settings", multiple entries can be added to the table "Relations betw
     * It must be linked in the main objecttype
 * Main objecttype:
     * Main objecttype which links to the TAN list objecttype
+       * make sure all DB_NOT_NULL fields are also marked as `required` to make sure frontend validation will prevent saving incomplete records so the plugin will not run on invalid records.
 * Tag "free":
     * Tag which indicates that a TAN list object is still free and can be assigned
     * The plugin checks if a newly linked TAN object has this tag
